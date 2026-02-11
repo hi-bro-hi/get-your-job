@@ -1,5 +1,5 @@
 import streamlit as st
-from datetime import date
+from datetime import date, timedelta
 import pandas as pd
 
 # ---------------- Page Config ----------------
@@ -30,7 +30,7 @@ colleges_by_state = {
     ]
 }
 
-# ---------------- Jobs (UNCHANGED) ----------------
+# ---------------- Jobs ----------------
 jobs = [
     ["Infosys", "Software Trainee", ["BTech", "BE"], 60, 18, 28],
     ["TCS", "Assistant System Engineer", ["BTech", "BE"], 60, 18, 28],
@@ -69,14 +69,14 @@ jobs = [
 if "page" not in st.session_state:
     st.session_state.page = "form"
 
-# ---------------- Page 1: Form (UNCHANGED) ----------------
+# ---------------- Page 1: Form ----------------
 if st.session_state.page == "form":
 
     st.title("Job Opportunity Portal")
     st.subheader("Enter your details to find eligible jobs")
 
     today = date.today()
-    max_dob = date(today.year - 18, today.month, today.day)
+    max_dob = today - timedelta(days=18*365)  # ✅ FIXED DOB BUG
 
     with st.form("job_form"):
         col1, col2 = st.columns(2)
@@ -154,7 +154,7 @@ elif st.session_state.page == "result":
     else:
         st.warning("No jobs found matching your eligibility")
 
-    # ---------------- Live Interview Updates (Streamlit-safe) ----------------
+    # ---------------- Live Interview Updates ----------------
     st.subheader("🔴 Live Interview Updates")
 
     @st.cache_data(show_spinner=False)
@@ -164,7 +164,6 @@ elif st.session_state.page == "result":
     try:
         interviews = load_interview_data()
         st.dataframe(interviews, use_container_width=True)
-        st.caption("Click button to check for latest interview updates")
 
         if st.button("🔄 Check for Interview Updates"):
             load_interview_data.clear()
