@@ -1,7 +1,6 @@
 import streamlit as st
 from datetime import date
 import pandas as pd
-import os   # ✅ NEW
 
 # ---------------- Page Config ----------------
 st.set_page_config(
@@ -155,26 +154,23 @@ elif st.session_state.page == "result":
     else:
         st.warning("No jobs found matching your eligibility")
 
-    # --------- UPDATED INTERVIEW SECTION ONLY ---------
+    # ---------------- Live Interview Updates (Streamlit-safe) ----------------
     st.subheader("🔴 Live Interview Updates")
 
-    csv_file = "interviews.csv"
+    @st.cache_data(show_spinner=False)
+    def load_interview_data():
+        return pd.read_csv("interviews.csv")
 
-    if os.path.exists(csv_file):
-        file_modified_time = os.path.getmtime(csv_file)
+    try:
+        interviews = load_interview_data()
+        st.dataframe(interviews, use_container_width=True)
+        st.caption("Click button to check for latest interview updates")
 
-        if "last_file_time" not in st.session_state:
-            st.session_state.last_file_time = file_modified_time
-
-        if file_modified_time != st.session_state.last_file_time:
-            st.session_state.last_file_time = file_modified_time
+        if st.button("🔄 Check for Interview Updates"):
+            load_interview_data.clear()
             st.rerun()
 
-        interviews = pd.read_csv(csv_file)
-        st.dataframe(interviews, use_container_width=True)
-        st.caption("Updates automatically when CSV file changes")
-
-    else:
+    except FileNotFoundError:
         st.error("Interview data file not found")
 
     if st.button("Go Back"):
