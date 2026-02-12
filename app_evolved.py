@@ -38,9 +38,9 @@ jobs = [
     ["Wipro", "Project Engineer", ["BTech", "BE", "Diploma"], 60, 18, 27],
     ["Accenture", "Associate Software Engineer", ["BTech", "BE", "MSc IT"], 65, 21, 28],
     ["ISRO", "Scientist/Engineer", ["BTech", "BE", "MTech"], 65, 21, 28],
-    ["Infosys", "Data Science Trainee", ["BSc", "BTech", "MSc Data Science"], 70, 21, 28],
+    ["Infosys", "Data Science Trainee", ["BSc", "BTech"], 70, 21, 28],
     ["Cognizant", "Operations Executive", ["BSc", "BCom", "BA"], 55, 18, 25],
-    ["Deloitte", "Audit Executive", ["BCom", "MCom", "MBA Finance"], 60, 21, 30],
+    ["Deloitte", "Audit Executive", ["BCom", "MCom"], 60, 21, 30],
     ["HDFC Bank", "Relationship Officer", ["BBA", "MBA"], 55, 21, 30],
     ["L&T", "Junior Technician", ["Diploma", "ITI"], 55, 18, 30],
     ["SSC", "CGL Officer", ["Any"], 55, 18, 32],
@@ -81,23 +81,30 @@ if st.session_state.page == "form":
             college = st.selectbox("College *", colleges_by_state[state])
 
         with col2:
-            degree = st.selectbox("Degree *", [
-                "BTech","BE","BCA","MCA","BSc","BSc Physics","BSc Chemistry",
-                "BCom","BBA","BA","MBA","MTech","Diploma","ITI",
-                "MBBS","BDS","BPT","BSc Nursing","PharmD",
-                "LLB","BArch","BDes","BEd","Hotel Management",
-                "Animation","Journalism","Mass Communication"
-            ])
+            degree = st.selectbox(
+                "Degree *",
+                [
+                    "BTech", "BE", "BCA", "MCA", "BSc", "BCom", "BBA", "BA",
+                    "MBA", "MTech", "Diploma", "ITI", "MBBS", "BDS", "BPT",
+                    "BSc Nursing", "PharmD", "LLB", "BArch", "BEd",
+                    "Hotel Management", "Animation", "Journalism"
+                ]
+            )
             tenth = st.number_input("10th Percentage *", 0.0, 100.0)
             twelfth = st.number_input("12th Percentage *", 0.0, 100.0)
             photo = st.file_uploader("Upload Photo *", type=["jpg", "png"])
-            certificate = st.file_uploader("Upload Degree Certificate *", type=["jpg", "png", "pdf"])
+            certificate = st.file_uploader(
+                "Upload Degree Certificate *",
+                type=["jpg", "png", "pdf"]
+            )
 
         submit = st.form_submit_button("🔍 Find Eligible Jobs")
 
     if submit:
         errors = []
-        age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+        age = today.year - dob.year - (
+            (today.month, today.day) < (dob.month, dob.day)
+        )
 
         if age < 18:
             errors.append("You must be at least 18 years old")
@@ -118,7 +125,11 @@ if st.session_state.page == "form":
             eligible = []
 
             for company, role, deg_list, min_per, min_age, max_age in jobs:
-                if (degree in deg_list or "Any" in deg_list) and avg_percent >= min_per and min_age <= age <= max_age:
+                if (
+                    (degree in deg_list or "Any" in deg_list)
+                    and avg_percent >= min_per
+                    and min_age <= age <= max_age
+                ):
                     eligible.append([company, role])
 
             st.session_state.name = name
@@ -133,17 +144,18 @@ if st.session_state.page == "form":
 # ============================================================
 if st.session_state.page == "result":
 
-    st.success(f"Welcome {st.session_state.name}! Age: {st.session_state.age}")
+    st.success(
+        f"Welcome {st.session_state.name}! Age: {st.session_state.age}"
+    )
 
     if st.session_state.eligible_jobs:
         st.subheader("🎯 Jobs You Are Eligible For")
 
-        for job in st.session_state.eligible_jobs:
-            company, role = job
-            col1, col2 = st.columns([3,1])
+        for company, role in st.session_state.eligible_jobs:
+            col1, col2 = st.columns([3, 1])
             col1.write(f"**{company}** — {role}")
 
-            if col2.button("Apply Now", key=company+role):
+            if col2.button("Apply Now", key=f"{company}_{role}"):
                 save_application(
                     st.session_state.name,
                     st.session_state.age,
@@ -159,4 +171,3 @@ if st.session_state.page == "result":
     if st.button("🔙 Go Back"):
         st.session_state.page = "form"
         st.rerun()
-  st.rerun()
