@@ -104,16 +104,18 @@ if "page" not in st.session_state:
 if st.session_state.page == "form":
     st.title("💼 Job Opportunity Portal")
 
+    # ✅ OUTSIDE FORM (refresh works)
+    colA, colB = st.columns(2)
+    with colA:
+        state = st.selectbox("State *", list(colleges_by_state.keys()))
+    with colB:
+        college = st.selectbox("College *", colleges_by_state[state])
+
     with st.form("job_form"):
         col1, col2 = st.columns(2)
         with col1:
             name = st.text_input("Full Name *")
             age = st.number_input("Your Age *",0,100)
-            state = st.selectbox("State *",list(colleges_by_state.keys()))
-
-            # ✅ UPDATED LINE (dynamic refresh)
-            college = st.selectbox("College *", colleges_by_state[state], key=f"college_{state}")
-
         with col2:
             degree = st.selectbox("Degree *",degree_list)
             tenth = st.number_input("10th % *",0.0,100.0)
@@ -124,20 +126,20 @@ if st.session_state.page == "form":
         submit = st.form_submit_button("🔍 Find Eligible Jobs")
 
     if submit:
-        errors = []
+        errors=[]
         if not name.strip(): errors.append("Full Name required")
         if age < 18: errors.append("Must be 18+")
         if tenth == 0 or twelfth == 0: errors.append("Enter academic percentages")
 
-        p_valid, p_msg = validate_pdf(photo)
-        c_valid, c_msg = validate_pdf(certificate)
-        if not p_valid: errors.append("Photo Error: " + p_msg)
-        if not c_valid: errors.append("Certificate Error: " + c_msg)
+        p_valid,p_msg=validate_pdf(photo)
+        c_valid,c_msg=validate_pdf(certificate)
+        if not p_valid: errors.append("Photo Error: "+p_msg)
+        if not c_valid: errors.append("Certificate Error: "+c_msg)
 
         if errors:
             for e in errors: st.error(e)
         else:
-            avg = (tenth+twelfth)/2
+            avg=(tenth+twelfth)/2
             eligible=[]
             for c,r,d,mn,a1,a2,link in jobs:
                 if (degree in d or "Any Degree" in d) and avg>=mn and a1<=age<=a2:
