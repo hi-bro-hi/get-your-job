@@ -110,7 +110,10 @@ if st.session_state.page == "form":
             name = st.text_input("Full Name *")
             age = st.number_input("Your Age *",0,100)
             state = st.selectbox("State *",list(colleges_by_state.keys()))
-            college = st.selectbox("College *",colleges_by_state[state])
+
+            # ✅ UPDATED LINE (dynamic refresh)
+            college = st.selectbox("College *", colleges_by_state[state], key=f"college_{state}")
+
         with col2:
             degree = st.selectbox("Degree *",degree_list)
             tenth = st.number_input("10th % *",0.0,100.0)
