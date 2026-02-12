@@ -1,15 +1,16 @@
 import streamlit as st
-from datetime import date, timedelta
-import pandas as pd
+from datetime import date
+import csv
+import os
 
-# ---------------- Page Config ----------------
+# ---------------- PAGE CONFIG ----------------
 st.set_page_config(
     page_title="Job Opportunity Portal",
     page_icon="💼",
     layout="wide"
 )
 
-# ---------------- Colleges by State ----------------
+# ---------------- COLLEGES ----------------
 colleges_by_state = {
     "Tamil Nadu": [
         "Anna University", "IIT Madras", "NIT Trichy", "VIT Vellore",
@@ -30,148 +31,132 @@ colleges_by_state = {
     ]
 }
 
-# ---------------- Jobs ----------------
+# ---------------- JOB DATABASE ----------------
 jobs = [
-    ["Infosys", "Software Trainee", ["BTech", "BE"], 60, 18, 28],
+    ["Infosys", "Software Trainee", ["BTech", "BE", "BCA", "MCA"], 60, 18, 28],
     ["TCS", "Assistant System Engineer", ["BTech", "BE"], 60, 18, 28],
-    ["Wipro", "Project Engineer", ["BTech", "BE"], 60, 18, 27],
-    ["Accenture", "Associate Software Engineer", ["BTech", "BE"], 65, 21, 28],
-    ["ISRO", "Scientist/Engineer", ["BTech", "BE"], 65, 21, 28],
-    ["TCS", "Data Analyst Intern", ["BSc", "BTech"], 65, 21, 26],
-    ["Infosys", "Data Science Trainee", ["BSc", "BTech"], 70, 21, 28],
-    ["Infosys", "Junior Developer", ["BCA", "MCA"], 60, 18, 28],
-    ["Wipro", "System Support Engineer", ["BCA", "MCA"], 55, 18, 27],
-    ["Cognizant", "Operations Executive", ["BSc"], 55, 18, 25],
-    ["Infosys", "BSc IT Trainee", ["BSc"], 60, 18, 26],
-    ["Deloitte", "Audit Executive", ["BCom"], 60, 21, 30],
-    ["KPMG", "Accounts Associate", ["BCom"], 58, 21, 30],
+    ["Wipro", "Project Engineer", ["BTech", "BE", "Diploma"], 60, 18, 27],
+    ["Accenture", "Associate Software Engineer", ["BTech", "BE", "MSc IT"], 65, 21, 28],
+    ["ISRO", "Scientist/Engineer", ["BTech", "BE", "MTech"], 65, 21, 28],
+    ["Infosys", "Data Science Trainee", ["BSc", "BTech", "MSc Data Science"], 70, 21, 28],
+    ["Cognizant", "Operations Executive", ["BSc", "BCom", "BA"], 55, 18, 25],
+    ["Deloitte", "Audit Executive", ["BCom", "MCom", "MBA Finance"], 60, 21, 30],
     ["HDFC Bank", "Relationship Officer", ["BBA", "MBA"], 55, 21, 30],
-    ["ICICI Bank", "Management Trainee", ["MBA"], 60, 21, 30],
-    ["Digital Marketing Firm", "Content Analyst", ["BA"], 55, 18, 28],
-    ["Media House", "Junior Editor", ["BA"], 55, 21, 30],
-    ["L&T", "Junior Technician", ["Diploma"], 55, 18, 30],
-    ["TVS Motors", "Service Technician", ["Diploma"], 55, 18, 28],
-    ["Banking Exam", "Clerk", ["Any"], 55, 20, 30],
-    ["Banking Exam", "Probationary Officer", ["Any"], 60, 21, 30],
+    ["L&T", "Junior Technician", ["Diploma", "ITI"], 55, 18, 30],
     ["SSC", "CGL Officer", ["Any"], 55, 18, 32],
-    ["RRB", "NTPC Graduate", ["Any"], 55, 18, 33],
-    ["Apollo Hospitals", "Junior Doctor", ["MBBS"], 60, 23, 35],
-    ["Fortis Hospitals", "Resident Doctor", ["MBBS", "MDS"], 65, 25, 40],
-    ["Dental Clinic", "Dental Intern", ["BDS"], 60, 22, 35],
-    ["Dental Clinic", "Dental Surgeon", ["MDS"], 65, 25, 40],
-    ["Physiotherapy Center", "Physiotherapist", ["BPT"], 60, 22, 35],
-    ["Pharmacy Corp", "Pharmacist", ["PharmD"], 60, 22, 35],
-    ["Hospital Nursing", "Staff Nurse", ["BSc Nursing"], 60, 20, 35],
-    ["Medical Research Lab", "Research Assistant", ["MBBS", "BSc Nursing", "BPT", "PharmD"], 65, 22, 35]
+    ["RRB", "NTPC Graduate", ["Any"], 55, 18, 33]
 ]
 
-# ---------------- Session State ----------------
+# ---------------- SAVE APPLICATION ----------------
+def save_application(name, age, degree, company, role):
+    file_exists = os.path.isfile("applications.csv")
+
+    with open("applications.csv", "a", newline="") as f:
+        writer = csv.writer(f)
+        if not file_exists:
+            writer.writerow(["Name", "Age", "Degree", "Company", "Role"])
+        writer.writerow([name, age, degree, company, role])
+
+# ---------------- SESSION STATE ----------------
 if "page" not in st.session_state:
     st.session_state.page = "form"
 
-# ---------------- Page 1: Form ----------------
+# ============================================================
+# 📝 FORM PAGE
+# ============================================================
 if st.session_state.page == "form":
 
-    st.title("Job Opportunity Portal")
-    st.subheader("Enter your details to find eligible jobs")
+    st.title("💼 Job Opportunity Portal")
+    st.subheader("Fill your details to discover jobs you qualify for")
 
     today = date.today()
-    max_dob = today - timedelta(days=18*365)  # ✅ FIXED DOB BUG
 
     with st.form("job_form"):
         col1, col2 = st.columns(2)
 
         with col1:
             name = st.text_input("Full Name *")
-            dob = st.date_input("Date of Birth *", max_value=max_dob)
+            dob = st.date_input("Date of Birth *")
             state = st.selectbox("State *", list(colleges_by_state.keys()))
             college = st.selectbox("College *", colleges_by_state[state])
 
         with col2:
-            degree = st.selectbox(
-                "Degree *",
-                [
-                    "BTech", "BE", "B.E. (Civil)", "B.E. (Mechanical)", "B.Tech (CS)",
-                    "BSc", "BSc (Physics)", "BSc (Chemistry)", "BSc (Maths)",
-                    "BCA", "BCom", "BCom (Hons)", "BCom (Finance)", "BBA",
-                    "BA", "BA (English)", "BA (Economics)", "BA (History)",
-                    "MBA", "MCA", "MCom",
-                    "MBBS", "BDS", "MDS", "BPT", "BSc Nursing", "PharmD",
-                    "Diploma", "LLB", "BArch"
-                ]
-            )
+            degree = st.selectbox("Degree *", [
+                "BTech","BE","BCA","MCA","BSc","BSc Physics","BSc Chemistry",
+                "BCom","BBA","BA","MBA","MTech","Diploma","ITI",
+                "MBBS","BDS","BPT","BSc Nursing","PharmD",
+                "LLB","BArch","BDes","BEd","Hotel Management",
+                "Animation","Journalism","Mass Communication"
+            ])
             tenth = st.number_input("10th Percentage *", 0.0, 100.0)
             twelfth = st.number_input("12th Percentage *", 0.0, 100.0)
             photo = st.file_uploader("Upload Photo *", type=["jpg", "png"])
             certificate = st.file_uploader("Upload Degree Certificate *", type=["jpg", "png", "pdf"])
 
-        submit = st.form_submit_button("Find Eligible Jobs")
+        submit = st.form_submit_button("🔍 Find Eligible Jobs")
 
     if submit:
         errors = []
-        if not name.strip(): errors.append("Full Name is required")
-        if tenth == 0 or twelfth == 0: errors.append("10th and 12th percentages are required")
-        if photo is None: errors.append("Photo upload is required")
-        if certificate is None: errors.append("Degree certificate upload is required")
+        age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+
+        if age < 18:
+            errors.append("You must be at least 18 years old")
+        if not name.strip():
+            errors.append("Full Name is required")
+        if tenth == 0 or twelfth == 0:
+            errors.append("10th and 12th percentages are required")
+        if photo is None:
+            errors.append("Photo upload is required")
+        if certificate is None:
+            errors.append("Degree certificate upload is required")
 
         if errors:
-            for e in errors: st.error(e)
+            for e in errors:
+                st.error(e)
         else:
-            age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
             avg_percent = (tenth + twelfth) / 2
             eligible = []
 
-            for job in jobs:
-                company, role, deg_list, min_per, min_age, max_age = job
-                if degree in deg_list and avg_percent >= min_per and min_age <= age <= max_age:
-                    eligible.append([company, role, min_per, f"{min_age}-{max_age}"])
-
-            if eligible:
-                for job in jobs:
-                    company, role, deg_list, min_per, min_age, max_age = job
-                    if "Any" in deg_list and avg_percent >= min_per and min_age <= age <= max_age:
-                        row = [company, role, min_per, f"{min_age}-{max_age}"]
-                        if row not in eligible:
-                            eligible.append(row)
+            for company, role, deg_list, min_per, min_age, max_age in jobs:
+                if (degree in deg_list or "Any" in deg_list) and avg_percent >= min_per and min_age <= age <= max_age:
+                    eligible.append([company, role])
 
             st.session_state.name = name
             st.session_state.age = age
+            st.session_state.degree = degree
             st.session_state.eligible_jobs = eligible
             st.session_state.page = "result"
             st.rerun()
 
-# ---------------- Page 2: Results ----------------
-elif st.session_state.page == "result":
+# ============================================================
+# 📊 RESULTS PAGE
+# ============================================================
+if st.session_state.page == "result":
 
-    st.title("Eligible Job Results")
-    st.success(f"Hello {st.session_state.name}, Age: {st.session_state.age}")
+    st.success(f"Welcome {st.session_state.name}! Age: {st.session_state.age}")
 
     if st.session_state.eligible_jobs:
-        df = pd.DataFrame(st.session_state.eligible_jobs,
-                          columns=["Company", "Role", "Min % Required", "Age Limit"])
-        st.dataframe(df, use_container_width=True)
-        st.info(f"Total eligible jobs found: {len(st.session_state.eligible_jobs)}")
+        st.subheader("🎯 Jobs You Are Eligible For")
+
+        for job in st.session_state.eligible_jobs:
+            company, role = job
+            col1, col2 = st.columns([3,1])
+            col1.write(f"**{company}** — {role}")
+
+            if col2.button("Apply Now", key=company+role):
+                save_application(
+                    st.session_state.name,
+                    st.session_state.age,
+                    st.session_state.degree,
+                    company,
+                    role
+                )
+                st.success(f"Applied to {company} for {role}!")
+
     else:
-        st.warning("No jobs found matching your eligibility")
+        st.warning("No jobs matched your profile.")
 
-    # ---------------- Live Interview Updates ----------------
-    st.subheader("🔴 Live Interview Updates")
-
-    @st.cache_data(show_spinner=False)
-    def load_interview_data():
-        return pd.read_csv("interviews.csv")
-
-    try:
-        interviews = load_interview_data()
-        st.dataframe(interviews, use_container_width=True)
-
-        if st.button("🔄 Check for Interview Updates"):
-            load_interview_data.clear()
-            st.rerun()
-
-    except FileNotFoundError:
-        st.error("Interview data file not found")
-
-    if st.button("Go Back"):
+    if st.button("🔙 Go Back"):
         st.session_state.page = "form"
         st.rerun()
+  st.rerun()
