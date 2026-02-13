@@ -7,6 +7,7 @@ import webbrowser
 st.set_page_config(page_title="Job Opportunity Portal", page_icon="💼", layout="wide")
 
 # ================= LOAD COLLEGES CSV =================
+# Make sure you have all_colleges_india.csv in same folder
 df = pd.read_csv("all_colleges_india.csv")
 
 # ================= DEGREE LIST (150+) =================
@@ -68,51 +69,33 @@ degree_list = [
 "Library Science","Information Science"
 ]
 
-# ================= JOB DATABASE (80+) =================
+# ================= JOB DATABASE (25+) =================
 jobs = [
-["Infosys","Software Engineer",["BTech","BE","MCA","BCA"],60,18,28,"https://www.infosys.com/careers"],
-["TCS","System Engineer",["BTech","BE"],60,18,28,"https://www.tcs.com/careers"],
-["Wipro","Project Engineer",["BTech","BE"],60,18,27,"https://careers.wipro.com"],
+["Infosys","Software Trainee",["BTech","BE","BCA","MCA"],60,18,28,"https://www.infosys.com/careers"],
+["TCS","Assistant System Engineer",["BTech","BE"],60,18,28,"https://www.tcs.com/careers"],
+["Wipro","Project Engineer",["BTech","BE","Diploma Engineering"],60,18,27,"https://careers.wipro.com"],
 ["HCL","Graduate Engineer Trainee",["BTech","BE"],60,18,28,"https://www.hcltech.com/careers"],
 ["Tech Mahindra","Software Developer",["BTech","BE","MCA"],60,18,28,"https://careers.techmahindra.com"],
-["Capgemini","Analyst Programmer",["BTech","BE","MCA"],60,18,28,"https://www.capgemini.com/careers"],
+["Capgemini","Analyst",["BTech","BE","MCA"],60,18,28,"https://www.capgemini.com/careers"],
 ["Accenture","Associate Software Engineer",["BTech","BE"],65,18,28,"https://www.accenture.com/in-en/careers"],
-["IBM","Application Developer",["BTech","BE"],65,18,28,"https://www.ibm.com/careers"],
+["IBM","Associate Developer",["BTech","BE"],65,18,28,"https://www.ibm.com/careers"],
 ["Cognizant","Programmer Analyst",["BTech","BE"],60,18,28,"https://careers.cognizant.com"],
-["Oracle","Cloud Associate",["BTech","BE"],65,18,28,"https://www.oracle.com/careers"],
-["Google","Associate Engineer",["BTech","BE"],75,21,30,"https://careers.google.com"],
-["Microsoft","Software Engineer",["BTech","BE"],75,21,30,"https://careers.microsoft.com"],
-
-["L&T","Site Engineer",["Civil Engineering"],60,18,30,"https://www.larsentoubro.com/careers"],
-["Tata Motors","Design Engineer",["Mechanical Engineering"],60,18,30,"https://careers.tatamotors.com"],
-["Siemens","Electrical Engineer",["Electrical Engineering"],65,18,30,"https://new.siemens.com/in/en/company/jobs.html"],
-["BHEL","Engineer Trainee",["BTech","BE"],60,18,28,"https://www.bhel.com/careers"],
-["NTPC","Executive Trainee",["BTech","BE"],60,18,28,"https://careers.ntpc.co.in"],
-["ONGC","Graduate Trainee",["BTech","BE"],60,18,28,"https://www.ongcindia.com/careers"],
-["HAL","Aeronautical Engineer",["Aeronautical Engineering"],60,18,28,"https://hal-india.co.in/Careers"],
+["L&T","Graduate Engineer",["BTech","BE"],60,18,28,"https://www.larsentoubro.com/careers"],
+["Flipkart","Operations Executive",["Any"],55,18,30,"https://www.flipkartcareers.com"],
+["Amazon","Virtual Customer Support",["Any"],50,18,35,"https://www.amazon.jobs"],
+["HDFC Bank","PO",["Any"],55,21,30,"https://www.hdfcbank.com/careers"],
+["ICICI Bank","Relationship Officer",["Any"],55,21,30,"https://www.icicibank.com/careers"],
+["Axis Bank","Sales Officer",["Any"],50,21,30,"https://www.axisbank.com/careers"],
+["SSC","CGL Officer",["Any"],55,18,32,"https://ssc.nic.in"],
+["RRB","NTPC Graduate",["Any"],55,18,33,"https://www.rrbcdg.gov.in"],
+["Indian Army","Technical Entry",["BTech","BE"],60,18,27,"https://joinindianarmy.nic.in"],
+["Indian Navy","Executive Officer",["BTech","BE"],60,19,27,"https://www.joinindiannavy.gov.in"],
 ["ISRO","Scientist",["BTech","BE"],65,18,28,"https://www.isro.gov.in/careers"],
-
-["SSC","CGL Officer",["Any Degree"],55,18,32,"https://ssc.gov.in"],
-["RRB","NTPC Graduate",["Any Degree"],55,18,33,"https://indianrailways.gov.in"]
-["UPSC","Civil Services",["Any"],60,21,32,"https://www.upsc.gov.in"],
-
-["HDFC Bank","Probationary Officer",["BCom","MBA"],55,21,30,"https://www.hdfcbank.com/careers"],
-["ICICI Bank","Relationship Officer",["BCom","MBA"],55,21,30,"https://www.icicibank.com/careers"],
-["Deloitte","Audit Associate",["BCom","CA"],60,21,30,"https://www2.deloitte.com/in/en/careers.html"],
-["KPMG","Tax Consultant",["BCom","CA"],60,21,30,"https://home.kpmg/in/en/home/careers.html"],
-
-["Apollo Hospitals","Junior Doctor",["MBBS"],60,23,35,"https://www.apollohospitals.com/careers"],
-["AIIMS","Staff Nurse",["BSc Nursing"],60,21,35,"https://www.aiims.edu/en/jobs.html"],
-["Cipla","Clinical Research Associate",["Pharmacy"],60,22,35,"https://www.cipla.com/careers"],
-
-["AZB & Partners","Legal Associate",["LLB"],60,23,35,"https://www.azbpartners.com/careers"],
-["NABARD","Development Officer",["Agriculture"],60,21,30,"https://www.nabard.org/careers"],
-["IndiGo","Ground Staff",["Aviation Management"],55,18,30,"https://careers.goindigo.in"],
-["Taj Hotels","Management Trainee",["Hotel Management"],55,21,30,"https://www.tajhotels.com/en-in/about-taj/careers"],
-["Times Group","Content Editor",["Journalism"],55,21,30,"https://timesgroup.com/careers"],
-["Byju's","Academic Counselor",["BEd"],55,21,30,"https://byjus.com/careers"],
-["Hafeez Contractor","Junior Architect",["BArch"],60,22,30,"https://www.hafeezcontractor.com/careers"],
-["Titan","Product Designer",["Product Designing"],60,21,30,"https://www.titancompany.in/careers"]
+["DRDO","Junior Research Fellow",["BTech","BE","MTech"],65,18,28,"https://www.drdo.gov.in/careers"],
+["HAL","Engineer",["BTech","BE"],60,18,28,"https://hal-india.co.in/Careers"],
+["BHEL","Engineer Trainee",["BTech","BE"],60,18,28,"https://www.bhel.com/careers"],
+["ONGC","Graduate Trainee",["BTech","BE"],60,18,28,"https://www.ongcindia.com/careers"],
+["NTPC","Executive Trainee",["BTech","BE"],60,18,28,"https://careers.ntpc.co.in"]
 ]
 
 # ================= SAVE APPLICATION =================
@@ -128,11 +111,14 @@ def save_application(name, age, degree, company, role):
 if "page" not in st.session_state:
     st.session_state.page = "form"
 
-# ================= FORM PAGE =================
+# ============================================================
+# FORM PAGE
+# ============================================================
 if st.session_state.page == "form":
 
     st.title("💼 Job Opportunity Portal")
 
+    # STATE & COLLEGE (dynamic refresh)
     state = st.selectbox("State *", sorted(df["State"].unique()))
     colleges = df[df["State"] == state]["College"].unique()
     college = st.selectbox("College *", sorted(colleges))
@@ -182,7 +168,9 @@ if st.session_state.page == "form":
             st.session_state.page = "result"
             st.rerun()
 
-# ================= RESULT PAGE =================
+# ============================================================
+# RESULT PAGE
+# ============================================================
 if st.session_state.page == "result":
 
     st.success(f"Welcome {st.session_state.name}! Age: {st.session_state.age}")
@@ -209,4 +197,3 @@ if st.session_state.page == "result":
     if st.button("🔙 Go Back"):
         st.session_state.page = "form"
         st.rerun()
-
