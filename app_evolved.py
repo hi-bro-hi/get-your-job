@@ -14,48 +14,23 @@ def validate_pdf(uploaded_file):
         return False, "File seems invalid or corrupted"
     return True, "Valid"
 
-# ---------------- DEGREE LIST ----------------
+# ---------------- MAIN DEGREE LIST ONLY ----------------
 degree_list = [
-"B.E Computer Science","B.E Mechanical","B.E Civil","B.E Electrical",
-"B.E Electronics","B.E ECE","B.E IT","B.E Chemical","B.E Automobile",
-"B.E Aeronautical","B.E Biomedical","B.E Mechatronics",
-"B.Tech CSE","B.Tech IT","B.Tech AI & DS","B.Tech AI & ML",
-"B.Tech Cyber Security","B.Tech Data Science","B.Tech Robotics",
-"B.Tech Biotechnology","B.Tech Food Tech","B.Tech Petroleum",
-"B.Tech Textile","B.Tech Marine","B.Tech Aerospace",
-"M.E CSE","M.E Mechanical","M.E Civil","M.E Structural",
-"M.Tech AI","M.Tech Data Science","M.Tech Cyber Security",
-"M.Tech Robotics","M.Tech VLSI",
-"B.Sc Physics","B.Sc Chemistry","B.Sc Mathematics","B.Sc Computer Science",
-"B.Sc IT","B.Sc Biotechnology","B.Sc Microbiology","B.Sc Psychology",
-"B.Sc Statistics","B.Sc Data Science","B.Sc AI",
-"M.Sc Physics","M.Sc Chemistry","M.Sc Mathematics",
-"M.Sc Computer Science","M.Sc Data Science","M.Sc AI",
-"M.Sc Biotechnology","M.Sc Psychology",
-"B.Com General","B.Com CA","B.Com Accounting","B.Com Finance",
-"B.Com Banking","B.Com Corporate Secretaryship",
-"M.Com General","M.Com Finance","M.Com Accounting",
-"BBA","BBA HR","BBA Finance","BBA Marketing",
-"MBA HR","MBA Finance","MBA Marketing","MBA Operations",
-"MBA Systems","MBA Business Analytics",
-"LLB","BA LLB","BBA LLB","LLM",
-"MBBS","BDS","BAMS","BHMS","BPT",
-"B.Sc Nursing","M.Sc Nursing","MD","MS",
-"B.Ed","M.Ed","PhD Education",
-"PhD Computer Science","PhD Physics","PhD Chemistry",
-"PhD Mathematics","PhD Biotechnology","PhD Management",
-"Diploma Mechanical","Diploma Civil","Diploma Electrical",
-"Diploma ECE","Diploma CSE","Diploma IT",
-"CA","CMA","CS","ICWA",
-"B.Sc Agriculture","M.Sc Agriculture",
-"B.Arch","M.Arch",
-"B.Des","M.Des",
-"BA Journalism","MA Journalism",
-"BSW","MSW",
-"BHM","MHM",
-"B.Sc Aviation","Commercial Pilot License",
-"B.Lib.Sc","M.Lib.Sc",
-"B.Sc Environmental Science","M.Sc Environmental Science"
+"BE","BTech","ME","MTech",
+"BSc","MSc",
+"BCom","MCom",
+"BBA","MBA",
+"BA","MA",
+"LLB","LLM",
+"MBBS","BDS",
+"BEd","MEd",
+"PhD",
+"Diploma",
+"CA","CMA","CS",
+"BArch","MArch",
+"BDes","MDes",
+"BSc Agriculture","MSc Agriculture",
+"BHM","MHM"
 ]
 
 # ---------------- REAL COLLEGES ----------------
@@ -185,26 +160,16 @@ colleges_by_state = {
 
 # ---------------- JOBS ----------------
 jobs = [
-["Infosys","Software Engineer",["BTech","BE","MCA","BCA"],60,18,28,"https://www.infosys.com/careers"],
+["Infosys","Software Engineer",["BTech","BE"],60,18,28,"https://www.infosys.com/careers"],
 ["TCS","System Engineer",["BTech","BE"],60,18,28,"https://www.tcs.com/careers"],
-["Wipro","Project Engineer",["BTech","BE"],60,18,27,"https://careers.wipro.com"],
-["HCL","Graduate Engineer Trainee",["BTech","BE"],60,18,28,"https://www.hcltech.com/careers"],
-["Tech Mahindra","Software Developer",["BTech","BE","MCA"],60,18,28,"https://careers.techmahindra.com"],
-["Capgemini","Analyst Programmer",["BTech","BE","MCA"],60,18,28,"https://www.capgemini.com/careers"],
+["Wipro","Project Engineer",["BTech","BE"],60,18,28,"https://careers.wipro.com"],
 ["Accenture","Associate Software Engineer",["BTech","BE"],65,18,28,"https://www.accenture.com/in-en/careers"],
-["IBM","Application Developer",["BTech","BE"],65,18,28,"https://www.ibm.com/careers"],
-["Cognizant","Programmer Analyst",["BTech","BE"],60,18,28,"https://careers.cognizant.com"],
-["Oracle","Cloud Associate",["BTech","BE"],65,18,28,"https://www.oracle.com/careers"],
 ["Google","Associate Engineer",["BTech","BE"],75,21,30,"https://careers.google.com"],
 ["Microsoft","Software Engineer",["BTech","BE"],75,21,30,"https://careers.microsoft.com"],
-["L&T","Site Engineer",["Civil Engineering"],60,18,30,"https://www.larsentoubro.com/careers"],
-["Tata Motors","Design Engineer",["Mechanical Engineering"],60,18,30,"https://careers.tatamotors.com"],
-["Siemens","Electrical Engineer",["Electrical Engineering"],65,18,30,"https://new.siemens.com/in/en/company/jobs.html"],
-["BHEL","Engineer Trainee",["BTech","BE"],60,18,28,"https://www.bhel.com/careers"],
-["NTPC","Executive Trainee",["BTech","BE"],60,18,28,"https://careers.ntpc.co.in"],
-["ONGC","Graduate Trainee",["BTech","BE"],60,18,28,"https://www.ongcindia.com/careers"],
-["HAL","Aeronautical Engineer",["Aeronautical Engineering"],60,18,28,"https://hal-india.co.in/Careers"],
-["ISRO","Scientist",["BTech","BE"],65,18,28,"https://www.isro.gov.in/careers"],
+["L&T","Site Engineer",["BE"],60,18,30,"https://www.larsentoubro.com/careers"],
+["BHEL","Engineer Trainee",["BE","BTech"],60,18,28,"https://www.bhel.com/careers"],
+["SSC","CGL Officer",["Any"],55,18,32,"https://ssc.nic.in"],
+["UPSC","Civil Services",["Any"],60,21,32,"https://www.upsc.gov.in"]
 ]
 
 # ---------------- SESSION ----------------
@@ -276,4 +241,3 @@ if st.session_state.page == "result":
     if st.button("🔙 Go Back"):
         st.session_state.page = "form"
         st.rerun()
-
