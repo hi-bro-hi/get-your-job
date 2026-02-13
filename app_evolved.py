@@ -205,9 +205,6 @@ jobs = [
 ["ONGC","Graduate Trainee",["BTech","BE"],60,18,28,"https://www.ongcindia.com/careers"],
 ["HAL","Aeronautical Engineer",["Aeronautical Engineering"],60,18,28,"https://hal-india.co.in/Careers"],
 ["ISRO","Scientist",["BTech","BE"],65,18,28,"https://www.isro.gov.in/careers"],
-["SSC","CGL Officer",["Any"],55,18,32,"https://ssc.nic.in"],
-["RRB","NTPC Graduate",["Any"],55,18,33,"https://www.rrbcdg.gov.in"],
-["UPSC","Civil Services",["Any"],60,21,32,"https://www.upsc.gov.in"]
 ]
 
 # ---------------- SESSION ----------------
@@ -279,3 +276,4 @@ if st.session_state.page == "result":
     if st.button("🔙 Go Back"):
         st.session_state.page = "form"
         st.rerun()
+
