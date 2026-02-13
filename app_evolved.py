@@ -93,8 +93,7 @@ jobs = [
 ["ISRO","Scientist",["BTech","BE"],65,18,28,"https://www.isro.gov.in/careers"],
 
 ["SSC","CGL Officer",["Any Degree"],55,18,32,"https://ssc.gov.in"],
-    ["RRB","NTPC Graduate",["Any Degree"],55,18,33,"https://indianrailways.gov.in"]
-]
+["RRB","NTPC Graduate",["Any Degree"],55,18,33,"https://indianrailways.gov.in"]
 ["UPSC","Civil Services",["Any"],60,21,32,"https://www.upsc.gov.in"],
 
 ["HDFC Bank","Probationary Officer",["BCom","MBA"],55,21,30,"https://www.hdfcbank.com/careers"],
@@ -210,3 +209,4 @@ if st.session_state.page == "result":
     if st.button("🔙 Go Back"):
         st.session_state.page = "form"
         st.rerun()
+
