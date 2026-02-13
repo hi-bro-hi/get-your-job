@@ -187,23 +187,26 @@ colleges_by_state = {
 
 
 # ---------------- 100+ JOBS ----------------
-jobs = []
-
-# 50 Government Jobs
-for i in range(1, 51):
-    jobs.append(["Central Government", f"Government Officer Grade {i}",
-                 degree_list, 50, 18, 35, "https://www.india.gov.in"])
-
-# 25 Bank Jobs
-for i in range(1, 26):
-    jobs.append(["Public Sector Bank", f"Bank Officer Scale {i}",
-                 degree_list, 55, 20, 30, "https://www.ibps.in"])
-
-# 25 Railway Jobs
-for i in range(1, 26):
-    jobs.append(["Indian Railways", f"Railway Officer Level {i}",
-                 degree_list, 50, 18, 33, "https://indianrailways.gov.in"])
-
+["Infosys","Software Trainee",["BTech","BE","MCA","BCA"],60,18,28,"https://www.infosys.com/careers"],
+["TCS","Assistant System Engineer",["BTech","BE"],60,18,28,"https://www.tcs.com/careers"],
+["Wipro","Project Engineer",["BTech","BE"],60,18,27,"https://careers.wipro.com"],
+["Accenture","Associate Software Engineer",["BTech","BE"],65,18,28,"https://www.accenture.com/in-en/careers"],
+["IBM","Associate Developer",["BTech","BE"],65,18,28,"https://www.ibm.com/careers"],
+["ISRO","Scientist",["BTech","BE"],65,18,28,"https://www.isro.gov.in/careers"],
+["DRDO","Research Fellow",["BTech","MTech"],65,18,28,"https://www.drdo.gov.in/careers"],
+["L&T","Site Engineer",["Civil Engineering"],60,18,30,"https://www.larsentoubro.com/careers"],
+["Tata Motors","Design Engineer",["Mechanical Engineering"],60,18,30,"https://careers.tatamotors.com"],
+["Apollo Hospitals","Junior Doctor",["MBBS"],60,23,35,"https://www.apollohospitals.com/careers"],
+["Cipla","Clinical Research Associate",["Pharmacy","BPharm"],60,21,30,"https://www.cipla.com/careers"],
+["HDFC Bank","Credit Analyst",["BCom","MBA","Finance"],55,21,30,"https://www.hdfcbank.com/careers"],
+["Deloitte","Audit Associate",["BCom","CA"],60,21,30,"https://www2.deloitte.com/in/en/careers.html"],
+["SSC","CGL Officer",["Any"],55,18,32,"https://ssc.nic.in"],
+["RRB","NTPC Graduate",["Any"],55,18,33,"https://www.rrbcdg.gov.in"],
+["Indian Army","Technical Entry",["BTech","BE"],60,18,27,"https://joinindianarmy.nic.in"],
+["Indian Navy","Executive Officer",["BTech","BE"],60,19,27,"https://www.joinindiannavy.gov.in"],
+["BHEL","Engineer Trainee",["BTech","BE"],60,18,28,"https://www.bhel.com/careers"],
+["ONGC","Graduate Trainee",["BTech","BE"],60,18,28,"https://www.ongcindia.com/careers"],
+["NTPC","Executive Trainee",["BTech","BE"],60,18,28,"https://careers.ntpc.co.in"],
 # ---------------- SESSION ----------------
 if "page" not in st.session_state:
     st.session_state.page = "form"
@@ -273,5 +276,6 @@ if st.session_state.page == "result":
     if st.button("🔙 Go Back"):
         st.session_state.page = "form"
         st.rerun()
+
 
 
