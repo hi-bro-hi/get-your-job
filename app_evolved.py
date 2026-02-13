@@ -187,6 +187,8 @@ colleges_by_state = {
 
 
 # ---------------- 100+ JOBS ----------------
+jobs += [
+
 ["Infosys","Software Engineer",["BTech","BE","MCA","BCA"],60,18,28,"https://www.infosys.com/careers"],
 ["TCS","System Engineer",["BTech","BE"],60,18,28,"https://www.tcs.com/careers"],
 ["Wipro","Project Engineer",["BTech","BE"],60,18,27,"https://careers.wipro.com"],
@@ -299,6 +301,7 @@ if st.session_state.page == "result":
     if st.button("🔙 Go Back"):
         st.session_state.page = "form"
         st.rerun()
+
 
 
 
