@@ -13,7 +13,8 @@ def validate_pdf(uploaded_file):
     if uploaded_file.size < 5000:
         return False, "File seems invalid or corrupted"
     return True, "Valid"
-# ---------------- 150+ DEGREES ----------------
+
+# ---------------- DEGREE LIST ----------------
 degree_list = [
 "B.E Computer Science","B.E Mechanical","B.E Civil","B.E Electrical",
 "B.E Electronics","B.E ECE","B.E IT","B.E Chemical","B.E Automobile",
@@ -57,9 +58,8 @@ degree_list = [
 "B.Sc Environmental Science","M.Sc Environmental Science"
 ]
 
-# ---------------- 150 COLLEGES PER STATE ----------------
+# ---------------- REAL COLLEGES ----------------
 colleges_by_state = {
-
     "Tamil Nadu": [
         "IIT Madras","NIT Tiruchirappalli","Anna University","University of Madras",
         "Bharathiar University","Bharathidasan University","Alagappa University",
@@ -102,7 +102,6 @@ colleges_by_state = {
         "Sri Ramachandra Institute of Higher Education and Research",
         "Chettinad Academy of Research and Education"
     ],
-
     "Karnataka": [
         "Indian Institute of Science Bangalore","NIT Surathkal",
         "University of Mysore","Bangalore University",
@@ -140,7 +139,6 @@ colleges_by_state = {
         "Acharya Institute of Technology",
         "RNS Institute of Technology","MVJ College of Engineering"
     ],
-
     "Kerala": [
         "IIT Palakkad","NIT Calicut","University of Kerala",
         "Mahatma Gandhi University Kerala","University of Calicut",
@@ -185,10 +183,8 @@ colleges_by_state = {
     ]
 }
 
-
-# ---------------- 100+ JOBS ----------------
-jobs += [
-
+# ---------------- JOBS ----------------
+jobs = [
 ["Infosys","Software Engineer",["BTech","BE","MCA","BCA"],60,18,28,"https://www.infosys.com/careers"],
 ["TCS","System Engineer",["BTech","BE"],60,18,28,"https://www.tcs.com/careers"],
 ["Wipro","Project Engineer",["BTech","BE"],60,18,27,"https://careers.wipro.com"],
@@ -201,7 +197,6 @@ jobs += [
 ["Oracle","Cloud Associate",["BTech","BE"],65,18,28,"https://www.oracle.com/careers"],
 ["Google","Associate Engineer",["BTech","BE"],75,21,30,"https://careers.google.com"],
 ["Microsoft","Software Engineer",["BTech","BE"],75,21,30,"https://careers.microsoft.com"],
-
 ["L&T","Site Engineer",["Civil Engineering"],60,18,30,"https://www.larsentoubro.com/careers"],
 ["Tata Motors","Design Engineer",["Mechanical Engineering"],60,18,30,"https://careers.tatamotors.com"],
 ["Siemens","Electrical Engineer",["Electrical Engineering"],65,18,30,"https://new.siemens.com/in/en/company/jobs.html"],
@@ -210,28 +205,11 @@ jobs += [
 ["ONGC","Graduate Trainee",["BTech","BE"],60,18,28,"https://www.ongcindia.com/careers"],
 ["HAL","Aeronautical Engineer",["Aeronautical Engineering"],60,18,28,"https://hal-india.co.in/Careers"],
 ["ISRO","Scientist",["BTech","BE"],65,18,28,"https://www.isro.gov.in/careers"],
-
 ["SSC","CGL Officer",["Any"],55,18,32,"https://ssc.nic.in"],
 ["RRB","NTPC Graduate",["Any"],55,18,33,"https://www.rrbcdg.gov.in"],
-["UPSC","Civil Services",["Any"],60,21,32,"https://www.upsc.gov.in"],
+["UPSC","Civil Services",["Any"],60,21,32,"https://www.upsc.gov.in"]
+]
 
-["HDFC Bank","Probationary Officer",["BCom","MBA"],55,21,30,"https://www.hdfcbank.com/careers"],
-["ICICI Bank","Relationship Officer",["BCom","MBA"],55,21,30,"https://www.icicibank.com/careers"],
-["Deloitte","Audit Associate",["BCom","CA"],60,21,30,"https://www2.deloitte.com/in/en/careers.html"],
-["KPMG","Tax Consultant",["BCom","CA"],60,21,30,"https://home.kpmg/in/en/home/careers.html"],
-
-["Apollo Hospitals","Junior Doctor",["MBBS"],60,23,35,"https://www.apollohospitals.com/careers"],
-["AIIMS","Staff Nurse",["BSc Nursing"],60,21,35,"https://www.aiims.edu/en/jobs.html"],
-["Cipla","Clinical Research Associate",["Pharmacy"],60,22,35,"https://www.cipla.com/careers"],
-
-["AZB & Partners","Legal Associate",["LLB"],60,23,35,"https://www.azbpartners.com/careers"],
-["NABARD","Development Officer",["Agriculture"],60,21,30,"https://www.nabard.org/careers"],
-["IndiGo","Ground Staff",["Aviation Management"],55,18,30,"https://careers.goindigo.in"],
-["Taj Hotels","Management Trainee",["Hotel Management"],55,21,30,"https://www.tajhotels.com/en-in/about-taj/careers"],
-["Times Group","Content Editor",["Journalism"],55,21,30,"https://timesgroup.com/careers"],
-["Byju's","Academic Counselor",["BEd"],55,21,30,"https://byjus.com/careers"],
-["Hafeez Contractor","Junior Architect",["BArch"],60,22,30,"https://www.hafeezcontractor.com/careers"],
-["Titan","Product Designer",["Product Designing"],60,21,30,"https://www.titancompany.in/careers"]]
 # ---------------- SESSION ----------------
 if "page" not in st.session_state:
     st.session_state.page = "form"
@@ -277,7 +255,7 @@ if st.session_state.page == "form":
             avg = (tenth + twelfth) / 2
             eligible = []
             for c, r, d, mn, a1, a2, link in jobs:
-                if (degree in d or "Any Degree" in d) and avg >= mn and a1 <= age <= a2:
+                if (degree in d or "Any" in d) and avg >= mn and a1 <= age <= a2:
                     eligible.append([c, r, link])
 
             st.session_state.name = name
@@ -301,9 +279,3 @@ if st.session_state.page == "result":
     if st.button("🔙 Go Back"):
         st.session_state.page = "form"
         st.rerun()
-
-
-
-
-
-
