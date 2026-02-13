@@ -1,153 +1,165 @@
 import streamlit as st
 import csv
 import os
-import pandas as pd
 
 st.set_page_config(page_title="Job Opportunity Portal", page_icon="💼", layout="wide")
 
-# ================= LOAD COLLEGES FROM CSV =================
-df_colleges = pd.read_csv("all_colleges_india.csv")
+# ---------------- PDF VALIDATION ----------------
+def validate_pdf(uploaded_file):
+    if uploaded_file is None:
+        return False, "File not uploaded"
+    if uploaded_file.type != "application/pdf":
+        return False, "Only PDF files are allowed"
+    if uploaded_file.size < 5000:
+        return False, "File seems invalid or corrupted"
+    return True, "Valid"
 
-# ================= DEGREE LIST (50+) =================
+# ---------------- COLLEGES (30+ EACH) ----------------
+colleges_by_state = {
+    "Tamil Nadu": [
+        "Anna University","IIT Madras","NIT Trichy","VIT Vellore","SRM University",
+        "SASTRA University","PSG Tech","CIT Coimbatore","Loyola College",
+        "Madras Christian College","Thiagarajar College","Kumaraguru College",
+        "Kongu Engineering","Hindustan University","Vel Tech","Bharath University",
+        "Saveetha University","Rajalakshmi Engineering","Panimalar Engineering",
+        "Easwari Engineering","Sri Krishna College","Amrita University",
+        "Karunya University","Dhanalakshmi College","Apollo Engineering",
+        "Jeppiaar Engineering","Tagore Engineering","Prince Engineering",
+        "Agni College","Jerusalem Engineering","Sathyabama University"
+    ],
+    "Karnataka": [
+        "IISc Bangalore","NIT Surathkal","RV College","PES University","BMS College",
+        "MS Ramaiah","Christ University","Jain University","Dayananda Sagar",
+        "New Horizon","CMR Institute","Reva University","Presidency University",
+        "Acharya Institute","Garden City","East West Institute","Global Academy",
+        "SJBIT","Oxford Engineering","AMC Engineering","MVJ College",
+        "Sir MVIT","BNM Institute","T John College","Kristu Jayanti",
+        "Mount Carmel","St Joseph’s College","KLE Tech","SDM Engineering",
+        "Manipal Institute","NMAMIT"
+    ],
+    "Kerala": [
+        "IIT Palakkad","NIT Calicut","CUSAT","CET Trivandrum","Model Engineering",
+        "Rajagiri Engineering","SCMS Engineering","TKM College","Amrita University",
+        "MES Engineering","Mar Athanasius","Saintgits College","Adi Shankara",
+        "Vidya Academy","GEC Thrissur","GEC Kannur","GEC Wayanad","Ilahia College",
+        "Mangalam College","SNG College","Sahrdaya College","Jyothi Engineering",
+        "Universal Engineering","LBS College","Federal Institute","Viswajyothi",
+        "Christ College","Baselios College","De Paul Institute","Younus College",
+        "College of Applied Science"
+    ]
+}
+
+# ---------------- 50+ DEGREES ----------------
 degree_list = [
-    "BTech","BE","BCA","MCA","Diploma","ITI","BSc","MSc","BCom","MCom",
-    "BBA","MBA","BA","MA","MBBS","BDS","LLB","LLM","BEd","MEd",
-    "Hotel Management","Aviation","Animation","Pharmacy","BPharm","MPharm",
-    "BPT","MPT","BArch","MArch","BHM","BTTM","Biotechnology",
-    "Microbiology","Data Science","Artificial Intelligence","Cyber Security",
-    "Cloud Computing","Mechanical Engineering","Civil Engineering",
-    "Electrical Engineering","Electronics Engineering","Chemical Engineering",
-    "Aeronautical Engineering","Marine Engineering","Agriculture",
-    "Forensic Science","Psychology","Sociology","Political Science",
-    "Economics","Statistics","Mathematics","Physics","Chemistry",
-    "Journalism","Mass Communication","Fine Arts","Fashion Designing"
+    "BTech","BE","BCA","MCA","Diploma","ITI","BSc CS","BSc IT","BSc Physics",
+    "BSc Chemistry","BSc Maths","BSc Statistics","BSc Biotechnology",
+    "BSc Microbiology","BSc Agriculture","BCom","BCom Finance","BCom Banking",
+    "BBA","MBA","MBA HR","MBA Finance","MBA Marketing","MBA Systems",
+    "BA English","BA Economics","BA History","BA Political Science",
+    "MA English","MA Economics","MA History","MA Sociology","BEd","MEd",
+    "MBBS","BDS","BPharm","DPharm","PharmD","Nursing","BPT","MPT",
+    "LLB","LLM","BA LLB","BBA LLB","Hotel Management","Aviation",
+    "Animation","Graphic Design","Fashion Design","Interior Design",
+    "Journalism","Mass Communication","Food Technology","Environmental Science",
+    "Veterinary Science","Forestry","Cyber Security","Cloud Computing",
+    "Artificial Intelligence","Machine Learning","Data Science","Robotics",
+    "Mechatronics","Automobile Engineering","Civil Engineering","Mechanical Engineering",
+    "Electrical Engineering","Electronics Engineering","Any Degree"
 ]
 
-# ================= JOB DATABASE (25+) =================
+# ---------------- 25+ JOBS ----------------
 jobs = [
     ["Infosys","Software Trainee",["BTech","BE","BCA","MCA"],60,18,28,"https://www.infosys.com/careers"],
-    ["TCS","Assistant System Engineer",["BTech","BE"],60,18,28,"https://www.tcs.com/careers"],
+    ["TCS","System Engineer",["BTech","BE"],60,18,28,"https://www.tcs.com/careers"],
     ["Wipro","Project Engineer",["BTech","BE","Diploma"],60,18,27,"https://careers.wipro.com"],
     ["HCL","Graduate Engineer",["BTech","BE"],60,18,28,"https://www.hcltech.com/careers"],
     ["Accenture","Associate Software Engineer",["BTech","BE"],60,18,28,"https://www.accenture.com/careers"],
-    ["Capgemini","Software Analyst",["BTech","BE","MCA"],60,18,28,"https://www.capgemini.com/careers"],
+    ["Capgemini","Analyst",["BTech","BE","MCA"],60,18,28,"https://www.capgemini.com/careers"],
+    ["Cognizant","Programmer Analyst",["BTech","BE"],60,18,28,"https://careers.cognizant.com"],
+    ["IBM","Associate Developer",["BTech","BE"],60,18,28,"https://www.ibm.com/careers"],
     ["Tech Mahindra","Software Engineer",["BTech","BE"],60,18,28,"https://careers.techmahindra.com"],
-    ["Cognizant","Programmer Analyst",["BTech","BE","MCA"],60,18,28,"https://careers.cognizant.com"],
-    ["IBM","Associate Developer",["BTech","BE"],65,18,28,"https://www.ibm.com/careers"],
-    ["Amazon","Cloud Support Associate",["BTech","BE"],65,18,30,"https://www.amazon.jobs"],
-    ["Google","Technical Associate",["BTech","BE"],70,18,30,"https://careers.google.com"],
-    ["Flipkart","Software Developer",["BTech","BE"],60,18,28,"https://www.flipkartcareers.com"],
-    ["SSC","CGL Officer",["Any"],55,18,32,"https://ssc.nic.in"],
-    ["RRB","NTPC Graduate",["Any"],55,18,33,"https://www.rrbcdg.gov.in"],
+    ["Oracle","Junior Developer",["BTech","BE"],60,18,28,"https://www.oracle.com/careers"],
+    ["Google","Support Engineer",["BTech","BE"],65,21,30,"https://careers.google.com"],
+    ["Amazon","Cloud Support Associate",["BTech","BE"],65,21,30,"https://www.amazon.jobs"],
+    ["Flipkart","Graduate Engineer",["BTech","BE"],60,21,30,"https://www.flipkartcareers.com"],
+    ["SSC","CGL Officer",["Any Degree"],55,18,32,"https://ssc.nic.in"],
+    ["RRB","NTPC Graduate",["Any Degree"],55,18,33,"https://www.rrbcdg.gov.in"],
+    ["Bank PO","Probationary Officer",["Any Degree"],60,20,30,"https://ibps.in"],
+    ["Indian Army","Technical Entry",["BTech","BE"],60,18,25,"https://joinindianarmy.nic.in"],
+    ["Indian Navy","Graduate Entry",["BTech","BE"],60,19,25,"https://www.joinindiannavy.gov.in"],
     ["ISRO","Scientist Assistant",["BTech","BE"],65,21,30,"https://www.isro.gov.in/careers"],
-    ["DRDO","Junior Research Fellow",["BTech","BE","MSc"],65,21,30,"https://www.drdo.gov.in/careers"],
-    ["BEL","Trainee Engineer",["BTech","BE"],60,18,28,"https://bel-india.in"],
-    ["HAL","Graduate Apprentice",["BTech","BE"],60,18,28,"https://hal-india.co.in"],
-    ["L&T","Site Engineer",["BTech","BE"],60,18,30,"https://www.larsentoubro.com/careers"],
-    ["Reliance","Graduate Engineer Trainee",["BTech","BE"],60,18,28,"https://careers.ril.com"],
-    ["Adani Group","Engineer",["BTech","BE"],60,18,28,"https://careers.adani.com"],
-    ["Tata Power","Engineer Trainee",["BTech","BE"],60,18,28,"https://www.tatapower.com/careers"],
-    ["Mahindra","Graduate Engineer",["BTech","BE"],60,18,28,"https://www.mahindra.com/careers"],
-    ["Bosch","Associate Engineer",["BTech","BE"],60,18,28,"https://www.bosch.in/careers"],
-    ["Siemens","Technical Engineer",["BTech","BE"],60,18,28,"https://new.siemens.com/careers"]
+    ["DRDO","Junior Scientist",["BTech","BE"],65,21,30,"https://www.drdo.gov.in"],
+    ["HAL","Graduate Engineer",["BTech","BE"],60,21,30,"https://hal-india.co.in"],
+    ["BSNL","Junior Engineer",["Diploma","BE"],55,18,30,"https://www.bsnl.co.in"],
+    ["BEL","Engineer Trainee",["BTech","BE"],60,21,30,"https://bel-india.in"],
+    ["NTPC","Graduate Engineer",["BTech","BE"],60,21,30,"https://www.ntpc.co.in"],
+    ["ONGC","Trainee Engineer",["BTech","BE"],60,21,30,"https://www.ongcindia.com"]
 ]
 
-# ================= SAVE APPLICATION =================
-def save_application(name, age, degree, company, role):
-    file_exists = os.path.isfile("applications.csv")
-    with open("applications.csv", "a", newline="") as f:
-        writer = csv.writer(f)
-        if not file_exists:
-            writer.writerow(["Name","Age","Degree","Company","Role"])
-        writer.writerow([name,age,degree,company,role])
-
-# ================= SESSION =================
+# ---------------- SESSION ----------------
 if "page" not in st.session_state:
     st.session_state.page = "form"
 
-# ====================================================
-# FORM PAGE
-# ====================================================
+# ---------------- FORM ----------------
 if st.session_state.page == "form":
-
     st.title("💼 Job Opportunity Portal")
 
+    # ✅ OUTSIDE FORM (refresh works)
+    colA, colB = st.columns(2)
+    with colA:
+        state = st.selectbox("State *", list(colleges_by_state.keys()))
+    with colB:
+        college = st.selectbox("College *", colleges_by_state[state])
+
     with st.form("job_form"):
-
         col1, col2 = st.columns(2)
-
         with col1:
             name = st.text_input("Full Name *")
-            age = st.number_input("Your Age *", min_value=0, max_value=100, step=1)
-
-            state = st.selectbox("State *", sorted(df_colleges["State"].unique()))
-            filtered_colleges = df_colleges[df_colleges["State"] == state]["College Name"].unique()
-            college = st.selectbox("College *", sorted(filtered_colleges))
-
+            age = st.number_input("Your Age *",0,100)
         with col2:
-            degree = st.selectbox("Degree *", degree_list)
-            tenth = st.number_input("10th Percentage *", 0.0, 100.0)
-            twelfth = st.number_input("12th Percentage *", 0.0, 100.0)
-
-            photo = st.file_uploader("Upload Photo (PDF only) *", type=["pdf"])
-            certificate = st.file_uploader("Upload Degree Certificate (PDF only) *", type=["pdf"])
+            degree = st.selectbox("Degree *",degree_list)
+            tenth = st.number_input("10th % *",0.0,100.0)
+            twelfth = st.number_input("12th % *",0.0,100.0)
+            photo = st.file_uploader("Upload Your Photo (PDF Only) *",["pdf"])
+            certificate = st.file_uploader("Upload Degree Certificate (PDF Only) *",["pdf"])
 
         submit = st.form_submit_button("🔍 Find Eligible Jobs")
 
     if submit:
-        errors = []
+        errors=[]
+        if not name.strip(): errors.append("Full Name required")
+        if age < 18: errors.append("Must be 18+")
+        if tenth == 0 or twelfth == 0: errors.append("Enter academic percentages")
 
-        if not name.strip():
-            errors.append("Full Name is required")
-        if age < 18:
-            errors.append("You must be at least 18 years old")
-        if tenth == 0 or twelfth == 0:
-            errors.append("10th and 12th percentages required")
-        if photo is None:
-            errors.append("Photo upload required (PDF only)")
-        if certificate is None:
-            errors.append("Degree certificate upload required (PDF only)")
+        p_valid,p_msg=validate_pdf(photo)
+        c_valid,c_msg=validate_pdf(certificate)
+        if not p_valid: errors.append("Photo Error: "+p_msg)
+        if not c_valid: errors.append("Certificate Error: "+c_msg)
 
         if errors:
-            for e in errors:
-                st.error(e)
+            for e in errors: st.error(e)
         else:
-            avg_percent = (tenth + twelfth) / 2
-            eligible = []
-
-            for company, role, deg_list, min_per, min_age, max_age, website in jobs:
-                if (
-                    (degree in deg_list or "Any" in deg_list)
-                    and avg_percent >= min_per
-                    and min_age <= age <= max_age
-                ):
-                    eligible.append([company, role, website])
-
-            st.session_state.name = name
-            st.session_state.age = age
-            st.session_state.degree = degree
-            st.session_state.eligible_jobs = eligible
-            st.session_state.page = "result"
+            avg=(tenth+twelfth)/2
+            eligible=[]
+            for c,r,d,mn,a1,a2,link in jobs:
+                if (degree in d or "Any Degree" in d) and avg>=mn and a1<=age<=a2:
+                    eligible.append([c,r,link])
+            st.session_state.name=name
+            st.session_state.age=age
+            st.session_state.eligible_jobs=eligible
+            st.session_state.page="result"
             st.rerun()
 
-# ====================================================
-# RESULT PAGE
-# ====================================================
-if st.session_state.page == "result":
-
+# ---------------- RESULTS ----------------
+if st.session_state.page=="result":
     st.success(f"Welcome {st.session_state.name}! Age: {st.session_state.age}")
-
     if st.session_state.eligible_jobs:
-        st.subheader("🎯 Jobs You Are Eligible For")
-
-        for company, role, website in st.session_state.eligible_jobs:
-            col1, col2 = st.columns([3,1])
-            col1.write(f"**{company}** — {role}")
-            col2.link_button("Apply Now", website)
-
+        for c,r,link in st.session_state.eligible_jobs:
+            col1,col2=st.columns([3,1])
+            col1.write(f"**{c}** — {r}")
+            col2.markdown(f"[🚀 Apply Now]({link})")
     else:
-        st.warning("No jobs matched your profile.")
-
+        st.warning("No jobs matched.")
     if st.button("🔙 Go Back"):
-        st.session_state.page = "form"
+        st.session_state.page="form"
         st.rerun()
