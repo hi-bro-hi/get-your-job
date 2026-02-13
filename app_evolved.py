@@ -231,7 +231,7 @@ jobs += [
 ["Times Group","Content Editor",["Journalism"],55,21,30,"https://timesgroup.com/careers"],
 ["Byju's","Academic Counselor",["BEd"],55,21,30,"https://byjus.com/careers"],
 ["Hafeez Contractor","Junior Architect",["BArch"],60,22,30,"https://www.hafeezcontractor.com/careers"],
-["Titan","Product Designer",["Product Designing"],60,21,30,"https://www.titancompany.in/careers"]
+["Titan","Product Designer",["Product Designing"],60,21,30,"https://www.titancompany.in/careers"]]
 # ---------------- SESSION ----------------
 if "page" not in st.session_state:
     st.session_state.page = "form"
@@ -301,6 +301,7 @@ if st.session_state.page == "result":
     if st.button("🔙 Go Back"):
         st.session_state.page = "form"
         st.rerun()
+
 
 
 
