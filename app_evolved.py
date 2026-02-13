@@ -1,4 +1,4 @@
-import streamlit as st
+iimport streamlit as st
 import csv
 import os
 
@@ -13,7 +13,6 @@ def validate_pdf(uploaded_file):
     if uploaded_file.size < 5000:
         return False, "File seems invalid or corrupted"
     return True, "Valid"
-
 # ---------------- 150+ DEGREES ----------------
 degree_list = [
 "B.E Computer Science","B.E Mechanical","B.E Civil","B.E Electrical",
@@ -59,14 +58,133 @@ degree_list = [
 ]
 
 # ---------------- 150 COLLEGES PER STATE ----------------
-states = ["Tamil Nadu", "Karnataka", "Kerala"]
-colleges_by_state = {}
+colleges_by_state = {
 
-for state in states:
-    colleges_by_state[state] = (
-        [f"{state} Government College {i}" for i in range(1, 76)] +
-        [f"{state} Engineering College {i}" for i in range(1, 76)]
-    )
+    "Tamil Nadu": [
+        "IIT Madras","NIT Tiruchirappalli","Anna University","University of Madras",
+        "Bharathiar University","Bharathidasan University","Alagappa University",
+        "Madurai Kamaraj University","Periyar University",
+        "Manonmaniam Sundaranar University",
+        "Tamil Nadu Agricultural University",
+        "Tamil Nadu Dr. MGR Medical University",
+        "Tamil Nadu Veterinary and Animal Sciences University",
+        "Annamalai University","VIT Vellore",
+        "SRM Institute of Science and Technology",
+        "SASTRA University","Amrita Vishwa Vidyapeetham Coimbatore",
+        "Hindustan Institute of Technology and Science",
+        "Saveetha Institute of Medical and Technical Sciences",
+        "Bharath Institute of Higher Education and Research",
+        "Sathyabama Institute of Science and Technology",
+        "Karunya Institute of Technology and Sciences",
+        "PSG College of Technology","Coimbatore Institute of Technology",
+        "Kumaraguru College of Technology","Kongu Engineering College",
+        "Thiagarajar College of Engineering",
+        "Sri Krishna College of Engineering and Technology",
+        "Vel Tech Rangarajan Dr. Sagunthala R&D Institute",
+        "Rajalakshmi Engineering College","Panimalar Engineering College",
+        "Easwari Engineering College","Jeppiaar Engineering College",
+        "St Joseph’s College of Engineering","SSN College of Engineering",
+        "RMK Engineering College","Velammal Engineering College",
+        "Sri Sairam Engineering College","Loyola College Chennai",
+        "Madras Christian College","Stella Maris College",
+        "Women’s Christian College","Presidency College Chennai",
+        "Ethiraj College for Women","PSG College of Arts and Science",
+        "American College Madurai","Bishop Heber College",
+        "Lady Doak College","Madras Medical College",
+        "Stanley Medical College","Kilpauk Medical College",
+        "Coimbatore Medical College","Madurai Medical College",
+        "Tirunelveli Medical College","Chengalpattu Medical College",
+        "Thoothukudi Medical College",
+        "Dr Ambedkar Government Law College Chennai",
+        "Tamil Nadu National Law University",
+        "Agricultural College and Research Institute Coimbatore",
+        "Forest College and Research Institute Mettupalayam",
+        "Sri Ramachandra Institute of Higher Education and Research",
+        "Chettinad Academy of Research and Education"
+    ],
+
+    "Karnataka": [
+        "Indian Institute of Science Bangalore","NIT Surathkal",
+        "University of Mysore","Bangalore University",
+        "Karnataka University Dharwad","Mangalore University",
+        "Kuvempu University","Gulbarga University",
+        "Visvesvaraya Technological University",
+        "University of Agricultural Sciences Bangalore",
+        "University of Agricultural Sciences Dharwad",
+        "Rajiv Gandhi University of Health Sciences",
+        "National Law School of India University",
+        "Christ University","Jain University",
+        "Manipal Academy of Higher Education",
+        "Alliance University","Reva University",
+        "Presidency University Bangalore","Azim Premji University",
+        "RV College of Engineering","PES University",
+        "BMS College of Engineering",
+        "MS Ramaiah Institute of Technology",
+        "Dayananda Sagar College of Engineering",
+        "New Horizon College of Engineering",
+        "CMR Institute of Technology",
+        "Sir M Visvesvaraya Institute of Technology",
+        "BNM Institute of Technology","SJBIT Bangalore",
+        "KLE Technological University","SDM College of Engineering",
+        "Bangalore Medical College","Mysore Medical College",
+        "Kasturba Medical College Manipal","St John’s Medical College",
+        "JSS Medical College","Mount Carmel College",
+        "St Joseph’s College Bangalore",
+        "Kristu Jayanti College","NMKRV College",
+        "Government Arts College Bangalore",
+        "KLE Society Law College",
+        "University Law College Bangalore",
+        "Garden City University","East West Institute of Technology",
+        "Global Academy of Technology","Oxford College of Engineering",
+        "AMC Engineering College","T John College",
+        "Acharya Institute of Technology",
+        "RNS Institute of Technology","MVJ College of Engineering"
+    ],
+
+    "Kerala": [
+        "IIT Palakkad","NIT Calicut","University of Kerala",
+        "Mahatma Gandhi University Kerala","University of Calicut",
+        "Cochin University of Science and Technology",
+        "Kerala Agricultural University",
+        "Kerala University of Health Sciences",
+        "Kerala Veterinary and Animal Sciences University",
+        "Central University of Kerala",
+        "Amrita Vishwa Vidyapeetham",
+        "APJ Abdul Kalam Technological University",
+        "College of Engineering Trivandrum",
+        "Government Engineering College Thrissur",
+        "Government Engineering College Kozhikode",
+        "Rajagiri School of Engineering and Technology",
+        "Model Engineering College Kochi",
+        "Mar Athanasius College of Engineering",
+        "TKM College of Engineering",
+        "Saintgits College of Engineering",
+        "Adi Shankara Institute of Engineering and Technology",
+        "Vidya Academy of Science and Technology",
+        "Sahrdaya College of Engineering",
+        "Jyothi Engineering College",
+        "Viswajyothi College of Engineering",
+        "Government Medical College Thiruvananthapuram",
+        "Government Medical College Kozhikode",
+        "Government Medical College Kottayam",
+        "Amrita Institute of Medical Sciences",
+        "Jubilee Mission Medical College",
+        "Pushpagiri Medical College",
+        "St Teresa’s College Kochi",
+        "Sacred Heart College Thevara",
+        "Mar Ivanios College",
+        "Farook College Kozhikode",
+        "Maharaja’s College Ernakulam",
+        "Government Law College Ernakulam",
+        "National University of Advanced Legal Studies",
+        "Federal Institute of Science and Technology",
+        "Ilahia College of Engineering",
+        "Mangalam College of Engineering",
+        "Younus College of Engineering",
+        "College of Applied Science Trivandrum"
+    ]
+}
+
 
 # ---------------- 100+ JOBS ----------------
 jobs = []
@@ -155,3 +273,4 @@ if st.session_state.page == "result":
     if st.button("🔙 Go Back"):
         st.session_state.page = "form"
         st.rerun()
+
